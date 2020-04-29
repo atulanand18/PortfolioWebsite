@@ -10,7 +10,7 @@
     <!--- basic page needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>Tibco Business Works 6 Project Validation.</title>
+    <title>Decrypting a password in TIBCO</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -131,16 +131,16 @@
                     </div>
                     <h1 class="page-header__title">
                         <a href="#0" title="">
-                            Tibco Business Works 6 Project Validation.
+                            Decrypting a password in TIBCO. Not a recommended practice. Only for exceptional scenario.
                         </a>
                     </h1>
                     <ul class="page-header__meta">
-                        <li class="date">July 31, 2019</li>
+                        <li class="date">April 29, 2020</li>
                         <li class="author">
                             By
                             <span>Atul Anand</span>
                         </li>
-						<li>4 minute read.</li> 
+						<li>1 minute read.</li> 
                     </ul>
                     
                 
@@ -157,52 +157,12 @@
 			
 			
 				<br></br>
-                <p class="lead">In this blog, I will talk about TIBCO BW 6 project validation.
-                <br></br>
-                I came across a problem in my project where an unvalidated code somehow made it to the Dev server which resulted in application errors.
+                <p class="lead">In this blog, I will talk about decrypting a password. Though this is not a recommended practice due to security concerns, but in case anyone needs it in an urgent exceptional scenario.<br><br>
+                TIBCO provides <strong>ObfuscateEngine</strong> class within <strong>tibcrypt.jar</strong> which can be used to decrypt the password. The tibcrypt jar can be found at TIBCO_HOME/lib folder.
 				
-				The build process doesn't report any tibco project validation issues as it does for a normal java application project. <br></br>
+				You can create a java code and call <strong>ObfuscateEngine.decrypt()</strong> method by passing the encrypted password as an input to the method.
 				
-				This problem statement led me to look for some solution so that any validation errors could be caught up during the build process itself.              
-				
-				I looked for TIBCO documentation and went through multiple blogs but could not find a solution for it. However Tibco provides <strong>bwdesign system:validate</strong> function but that command can be executed as standalone only. <br> </br>This is when I thought of leveraging Tibco's provided <strong>bwdesign system:validate</strong> function and created a simple Java application using it, which would run validation on TIBCO projects. I made it as a Java plugin : <strong>bw6-validation-maven-plugin</strong> which can be plugged-in any of the TIBCO BW 6 application projects. <br> </br>
-
-                
-				<strong>bw6-validation-maven-plugin</strong> is a maven plugin for performing validation of TIBCO BW 6.x version projects during build process. 
-				It makes use of bwdesign utility for the execution part. It first creates a workspace and imports the application modules in the workspace using 
-				bwdesign's system:import. Finally it calls system:validate to perform validation of the workspace and report any validation errors.
-				
-				
-				<blockquote><p>The main benefit we get from this is that it reports any validation errors in the project which might have creeped in unintentionally and can be caught during the project build process.</p></blockquote>
-				
-				<p class="lead">
-				To use bw6-validation-maven-plugin is simple. You download the code provided in the github location in the link shared at the end of the blog.
-				Run <strong>mvn clean install</strong> which will create the plugin in your local git repository. Now include this plugin in your TIBCO application at the parent level and this would report any validation errors found in the project at build time.
-	
-				</p>
-				
-				<code>&lt;plugin&gt;<br>
-				  &nbsp;&nbsp;&nbsp;&lt;groupId&gt;com.tibco.bw6.plugins&lt;/groupId&gt;<br>
-				  &nbsp;&nbsp;&nbsp;&lt;artifactId&gt;bw6-validation-maven-plugin&lt;/artifactId&gt;<br>
-				  &nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.0&lt;/version&gt;<br>
-				  &nbsp;&nbsp;&nbsp;&lt;executions&gt;<br>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;execution&gt;<br>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;goals&gt;<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;goal&gt;ProjectValidate&lt;/goal&gt;<br>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/goals&gt;<br>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/execution&gt;<br>
-				  &nbsp;&nbsp;&nbsp;&lt;/executions&gt;<br>
-				&lt;/plugin&gt;
-				</code>
-				<br>
-				
-				<p class="lead">
-				
-				<br>
-				The complete source code for the validation plugin is available at 
-				 <a target="_blank" href="https://github.com/atulanand18/TIBCOBw6Validation">this GitHub project</a>. 
-
-				</p>
+				The output returned by the execution of the method is the decrypted password.
 				
 				<div id="disqus_thread"></div>
 <script>
